@@ -1,6 +1,10 @@
 // main.dart
 import 'package:flutter/material.dart';
+import 'package:loja/models/cart.dart';
+import 'package:loja/models/order_list.dart';
 import 'package:loja/models/product_list.dart';
+import 'package:loja/pages/cart_page.dart';
+import 'package:loja/pages/orders_page.dart';
 import 'package:loja/pages/product_detail_page.dart';
 import 'package:loja/pages/product_overview_page.dart';
 import 'package:loja/utils/app_routes.dart';
@@ -15,8 +19,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (_) => ProductList(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ProductList(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => Cart(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrderList(),
+        )
+      ],
       child: MaterialApp(
         title: 'Flutter Demo',
         theme: ThemeData(
@@ -26,8 +40,12 @@ class MyApp extends StatelessWidget {
           ),
           fontFamily: 'Lato',
         ),
-        home: ProductOverviewPage(),
-        routes: {AppRoutes.productDetail: (ctx) => const ProductDetailPage()},
+        routes: {
+          AppRoutes.home: (ctx) => ProductOverviewPage(),
+          AppRoutes.productDetail: (ctx) => const ProductDetailPage(),
+          AppRoutes.cart: (ctx) => const CartPage(),
+          AppRoutes.orders: (ctx) => const OrdersPage(),
+        },
         debugShowCheckedModeBanner: false,
       ),
     );
